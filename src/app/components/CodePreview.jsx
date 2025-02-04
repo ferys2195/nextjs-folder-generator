@@ -1,35 +1,47 @@
-import React from "react";
+"use client";
+import React, { useState } from "react";
 import { FiCopy } from "react-icons/fi";
 
 function CodePreview() {
+  const [copied, setCopied] = useState(false);
+
+  const codeSnippet = `
+  <div className="flex justify-center items-center bg-blue-500 text-white p-4">
+    <h1 className="text-2xl">Hello, World!</h1>
+    <a>Hello Reactjs</a>
+  </div>
+  `;
+
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(codeSnippet).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    });
+  };
+
   return (
-    <>
-      <div class="relative max-w-2xl mx-auto mt-24">
-        <div class="bg-gray-900 text-white p-4 rounded-md">
-          <div class="flex justify-between items-center mb-2">
-            <span class="text-gray-400">Code:</span>
-            <button
-              class="code bg-gray-800 hover:bg-gray-700 text-gray-300 px-3 py-1 rounded-md"
-              data-clipboard-target="#code"
-            >
-              Copy
-            </button>
-          </div>
-          <div class="overflow-x-auto">
-            <pre id="code" class="text-gray-300">
-              <code>
-                &lt;div class="flex justify-center items-center bg-blue-500
-                text-white p-4"&gt; &lt;h1 class="text-2xl"&gt;Hello, Tailwind
-                CSS!&lt;/h1&gt; &lt;/div&gt;
-              </code>
-            </pre>
-          </div>
+    <div className="relative max-w-2xl mx-auto mt-24">
+      <div className="bg-gray-900 text-white p-4 rounded-md">
+        <div className="flex justify-between items-center mb-2">
+          <span className="text-gray-400 flex gap-2">
+            <div className="w-3 h-3 rounded-full bg-red-500"></div>
+            <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
+            <div className="w-3 h-3 rounded-full bg-green-500"></div>
+          </span>
+          <button
+            onClick={copyToClipboard}
+            className="btn btn-neutral btn-sm btn-square"
+          >
+            {copied ? "Copied!" : <FiCopy />}
+          </button>
+        </div>
+        <div className="overflow-x-auto">
+          <pre className="text-gray-300 bg-gray-800 p-4 rounded-md whitespace-pre overflow-x-auto">
+            <code>{codeSnippet}</code>
+          </pre>
         </div>
       </div>
-    </>
-
-    //<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js"></script>
-    //<script>new ClipboardJS('.code');</script>
+    </div>
   );
 }
 
